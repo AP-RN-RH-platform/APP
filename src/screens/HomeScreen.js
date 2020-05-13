@@ -6,7 +6,14 @@ import Button from '../components/Button';
 import Paragraph from '../components/Paragraph';
 
 
+const testAPI = () => {
+  fetch('https://localhost:8443/users')
+    .then((response) => response.json())
+    .then((data) => console.log(data));
+};
+
 const HomeScreen = ({ navigation }) => (
+  
   <Background>
     <Logo />
     <Paragraph>
@@ -17,7 +24,7 @@ const HomeScreen = ({ navigation }) => (
     </Button>
     <Button
       mode="outlined"
-      onPress={() => navigation.navigate('Register')}
+      onPress={() => testAPI()}
     >
       Inscription
     </Button>
