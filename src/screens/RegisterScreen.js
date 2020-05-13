@@ -35,6 +35,24 @@ const RegisterScreen = ({ navigation }) => {
     })
   }
 
+  const createFormData = (photo, body) => {
+    const data = new FormData();
+  
+    data.append("photo", {
+      name: photo.fileName,
+      type: photo.type,
+      uri: photo.uri
+    });
+  
+    // Object.keys(body).forEach(key => {
+    //   data.append(key, body[key]);
+    // });
+  
+    return data;
+  };
+
+  
+
   const register = () => {
 
     if(password === "" || confirmPassword === "" || email === ""){
@@ -45,6 +63,21 @@ const RegisterScreen = ({ navigation }) => {
     }
 
     if(checked === "candidat"){
+
+      fetch('https://localhost:8443/media_objects', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: createFormData(picture)
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+        });
+
+
       fetch('https://localhost:8443/users', {
         method: 'POST',
         headers: {
