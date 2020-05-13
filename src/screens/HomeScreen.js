@@ -6,29 +6,28 @@ import Button from '../components/Button';
 import Paragraph from '../components/Paragraph';
 
 
-const testAPI = () => {
-  fetch('https://localhost:8443/users')
-    .then((response) => response.json())
-    .then((data) => console.log(data));
-};
 
-const HomeScreen = ({ navigation }) => (
+
+const HomeScreen = ({ navigation }) => { 
+
+  return (
   
-  <Background>
-    <Logo />
-    <Paragraph>
-        RH-APP est une application  ✅
-    </Paragraph>
-    <Button mode="contained" onPress={() => navigation.navigate('Login')}>
-      Connexion
-    </Button>
-    <Button
-      mode="outlined"
-      onPress={() => testAPI()}
-    >
-      Inscription
-    </Button>
-  </Background>
-);
+    <Background>
+      <Logo />
+      <Paragraph>
+          RH-APP est une application  ✅
+      </Paragraph>
+      <Button mode="contained" onPress={() => navigation.navigate('Login')}>
+        Connexion
+      </Button>
+      <Button
+        mode="outlined"
+        onPress={() => navigation.navigate('Register')}
+      >
+        Inscription
+      </Button>
+    </Background>
+  )
+};
 
 export default memo(HomeScreen);
