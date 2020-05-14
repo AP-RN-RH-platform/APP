@@ -5,8 +5,9 @@ import Logo from '../components/Logo';
 import Button from '../components/Button';
 import TextInput from '../components/TextInput';
 import { theme } from '../core/theme';
+import AsyncStorage from '@react-native-community/async-storage';
 
-import { AsyncStorage } from 'react-native';
+
 
 const LoginScreen = ({ navigation }) => {
 
@@ -27,9 +28,14 @@ const login = () => {
       })
         .then((response) => response.json())
         .then((data) => {
+            console.log(data);
+            if(data.code){
+                return alert(data.message)
+            }
           AsyncStorage.setItem(
             'token',data.token
           );
+          AsyncStorage
           navigation.navigate('Profile')
         });
 };

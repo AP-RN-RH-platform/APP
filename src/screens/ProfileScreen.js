@@ -5,7 +5,7 @@ import Logo from '../components/Logo';
 
 import Button from '../components/Button';
 
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 
 
@@ -16,6 +16,7 @@ const value = AsyncStorage.getItem('token');
 
     const logout = () => {
         AsyncStorage.removeItem('token', (err) => console.log('userId', err));
+        navigation.navigate('Login');
 
     }
 
