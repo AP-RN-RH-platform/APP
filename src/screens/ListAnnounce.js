@@ -1,35 +1,66 @@
-import React, { memo } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import  ListItem  from '../components/ListItem';
 import { StyleSheet } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+import { Surface } from 'react-native-paper';
+import Background from '../components/Background';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 const ListAnnounce = ({ navigation }) => {
+  var [offers, setOffers] = useState([]);
+  
+  const getTokenFromStorageAsync = async () => {
+    var value = await AsyncStorage.getItem('token')
+    return value
+  }
+  //console.log(getTokenFromStorageAsync());
+  
+  const getOffersUser =  async() => {
+  fetch('https://localhost:8443/offers', {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + getTokenFromStorageAsync(),
+    }, 
+  }
+  ).then((response) => response.json())
+   .then((data) => {
+    
+    setOffers(data);
+   
+  });
+};
   
   
-  const value = AsyncStorage.getItem('token');
-  console.log(value);
-  
-  fetch('https://localhost:8443/offer', {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + value,
-        },
-      
-      })
+    useEffect(() => {
+      // Met à jour le titre du document via l’API du navigateur
+      getOffersUser();
+    },[]);
 
+  
+
+  
   return(
-    <ListItem children={{'title':"test", 'company':"test2", 'offerdesc':"test3", 'place':"test","type":"testtest"}}>
+    
+    <ScrollView>
+     { offers.map( (offer) => 
+     <ListItem children={{'title':offer.name, 'company':offer.companyDescription, 'offerdesc':offer.offerDescription, 'place':offer.place,"type":offer.type}}/>
+    
+    )}
+    </ScrollView>
+    )
+    
 
-    </ListItem>)
-  
+     
 };
 
 const styles = StyleSheet.create({
+  scrollView: {
+    backgroundColor: Colors.lighter,
+  },
   engine: {
     position: 'absolute',
     right: 0,
@@ -66,3 +97,4 @@ const styles = StyleSheet.create({
 });
 
 export default memo(ListAnnounce);
+
