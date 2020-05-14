@@ -5,7 +5,6 @@ import Logo from '../components/Logo';
 import Button from '../components/Button';
 import TextInput from '../components/TextInput';
 import { theme } from '../core/theme';
-
 import AsyncStorage from '@react-native-community/async-storage';
 
 const LoginScreen = ({ navigation }) => {
@@ -33,6 +32,7 @@ const login = () => {
           AsyncStorage.setItem(
             'token',data.token
           );
+          AsyncStorage
           navigation.navigate('Profile')
         });
 };

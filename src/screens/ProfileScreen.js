@@ -12,7 +12,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 const ProfileScreen = ({ navigation }) => {
 
 
-
 const [role,setRole]= useState("");
 
 const [user,setUser]= useState({});
@@ -67,6 +66,10 @@ if(getTokenFromStorageAsync() !== null){
             { role !== 'ROLE_RECRUITER' &&
             <Button mode="contained" onPress={() => navigation.navigate('Token')}>
                 Postuler a une offre
+            </Button>}
+            { role !== 'ROLE_RECRUITER' &&
+            <Button mode="contained"  onPress={() => navigation.navigate('Token')}>
+            Offre via Token
             </Button>}
             <Button style={styles.bkColor}mode="contained"  onPress={() => logout()} >
                 Déconnexion
