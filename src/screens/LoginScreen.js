@@ -7,8 +7,6 @@ import TextInput from '../components/TextInput';
 import { theme } from '../core/theme';
 import AsyncStorage from '@react-native-community/async-storage';
 
-
-
 const LoginScreen = ({ navigation }) => {
 
 const [email,setEmail]= useState("");
@@ -28,7 +26,6 @@ const login = () => {
       })
         .then((response) => response.json())
         .then((data) => {
-            console.log(data);
             if(data.code){
                 return alert(data.message)
             }
