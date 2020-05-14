@@ -38,7 +38,7 @@ const OfferScreen = ({ route,navigation }) => {
         <List.Subheader style={styles.taille}>Type de contrat : { route.params.data.contractType }</List.Subheader>
         <List.Subheader style={styles.taille}>Date de début : { route.params.data.beginAt.substring(0,10) }</List.Subheader>
      </List.Section>
-      <Button mode="contained" onPress={() => navigation.navigate('FormCandidate')}>
+      <Button mode="contained" onPress={() => navigation.navigate('FormCandidate',route.params.data)}>
               CANDIDATER
       </Button>
     </Background>
