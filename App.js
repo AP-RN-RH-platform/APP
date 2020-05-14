@@ -18,6 +18,7 @@ import ListAnnounce from './src/screens/ListAnnounce';
 import CreateOffer from './src/screens/CreateOfferScreen';
 import TokenScreen from "./src/screens/TokenScreen";
 import OfferScreen from './src/screens/OfferScreen';
+import FormCandidateScreen from "./src/screens/FormCandidateScreen";
 
 
 const Stack = createStackNavigator();
@@ -35,8 +36,9 @@ const App: () => React$Node = () => {
           <Stack.Screen name="CreateOffer" component={CreateOffer} />
           <Stack.Screen name="Token" component={TokenScreen} />
           <Stack.Screen name="Offer" component={OfferScreen} />
+          <Stack.Screen name="FormCandidate" component={FormCandidateScreen} />
 
-            </Stack.Navigator>
+        </Stack.Navigator>
         </NavigationContainer>
     );
 }
