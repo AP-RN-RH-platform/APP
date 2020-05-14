@@ -14,6 +14,7 @@ import RegisterScreen from "./src/screens/RegisterScreen";
 import HomeScreen from "./src/screens/HomeScreen";
 import ForgotPasswordScreen from "./src/screens/ForgotPasswordScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
+import TokenScreen from "./src/screens/TokenScreen";
 
 
 const Stack = createStackNavigator();
@@ -28,6 +29,7 @@ const App: () => React$Node = () => {
           <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
 
           <Stack.Screen name="Profile" component={ProfileScreen} />
+          <Stack.Screen name="Token" component={TokenScreen} />
 
 
         </Stack.Navigator>
