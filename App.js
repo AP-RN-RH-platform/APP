@@ -28,17 +28,17 @@ const App: () => React$Node = () => {
   return (
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Register" component={RegisterScreen} />
-          <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
-          <Stack.Screen name="Profile" component={ProfileScreen} />
-          <Stack.Screen name="ListAnnounce" component={ListAnnounce} />
-          <Stack.Screen name="CreateOffer" component={CreateOffer} />
-          <Stack.Screen name="Token" component={TokenScreen} />
+          <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Accueil' }} />
+          <Stack.Screen name="Login" component={LoginScreen} options={{ title: 'Connexion' }}/>
+          <Stack.Screen name="Register" component={RegisterScreen} options={{ title: 'Inscription' }}/>
+          <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} options={{ title: 'Mot de passe oublié' }} />
+          <Stack.Screen name="Profile" component={ProfileScreen} options={{ title: 'Mon profil' }} />
+          <Stack.Screen name="ListAnnounce" component={ListAnnounce} options={{ title: 'Liste des offres' }} />
+          <Stack.Screen name="CreateOffer" component={CreateOffer} options={{ title: 'Créer une offre' }} />
+          <Stack.Screen name="Token" component={TokenScreen} options={{ title: 'Accéder à une offre' }}/>
           <Stack.Screen name="Offer" component={OfferScreen} />
-          <Stack.Screen name="FormCandidate" component={FormCandidateScreen} />
-          <Stack.Screen name="OfferDetail" component={OfferDetailScreen} />
+          <Stack.Screen name="FormCandidate" component={FormCandidateScreen} options={{ title: 'Candidature' }} />
+          <Stack.Screen name="OfferDetail" component={OfferDetailScreen} options={{ title: 'Offre' }} />
 
         </Stack.Navigator>
         </NavigationContainer>
