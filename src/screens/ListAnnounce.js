@@ -46,8 +46,8 @@ const ListAnnounce = ({ navigation }) => {
   return(
     
     <ScrollView>
-     { offers.map( (offer) => 
-     <ListItem children={{'title':offer.name, 'company':offer.companyDescription, 'offerdesc':offer.offerDescription, 'place':offer.place,"type":offer.type}}/>
+     { offers.map( (offer, i) => 
+     <ListItem key={i} children={{'title':offer.name, 'company':offer.companyDescription, 'offerdesc':offer.offerDescription, 'place':offer.place,"type":offer.type}}/>
     
     )}
     </ScrollView>
