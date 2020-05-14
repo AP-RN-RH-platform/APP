@@ -19,16 +19,17 @@ const LoginScreen = ({ navigation }) => {
                 'Content-Type': 'application/json'
             }
         })
-            .then((response) => response.json())
-            .then((data) => {
-                if(data.detail){
-                    return alert(data.detail)
-                }
-                navigation.navigate('Offer',{
-                    data
-                  });
-
+        .then((response) => response.json())
+        .then((data) => {
+            if(data.detail){
+                return alert(data.detail)
+            }
+            navigation.navigate('Offer',{
+                data
             });
+        }).catch((err) => {
+            alert(err)
+        });
     };
 
     return (

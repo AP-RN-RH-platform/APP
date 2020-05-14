@@ -39,12 +39,13 @@ const [user,setUser]= useState({});
               'Content-Type': 'application/json',
               'Authorization': 'Bearer ' + getTokenFromStorageAsync(),
             }
-          })
-          .then((response) => response.json())
-          .then((data) => {
-
+        })
+        .then((response) => response.json())
+        .then((data) => {
             setRole(data.roles[0])
-          });
+        }).catch((err) => {
+            alert(err);
+        });
       }, []);
 
       

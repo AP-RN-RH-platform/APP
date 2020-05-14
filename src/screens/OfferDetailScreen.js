@@ -20,19 +20,20 @@ const OfferDetailScreen = ({ route,navigation }) => {
 
     useEffect(() => {
         fetch('https://localhost:8443/current_user',
-            {
-            method: 'GET',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + getTokenFromStorageAsync(),
-            }
-          })
-          .then((response) => response.json())
-          .then((data) => {
-
-            setRole(data.roles[0])
-          });
+          {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + getTokenFromStorageAsync(),
+          }
+        })
+        .then((response) => response.json())
+        .then((data) => {
+          setRole(data.roles[0])
+        }).catch((err) => {
+          alert(err)
+        });
       }, []);
 
   const sendInvitation = () => {
@@ -48,11 +49,13 @@ const OfferDetailScreen = ({ route,navigation }) => {
           offer: "/offers/"+ route.params.offer.id
         })
     })
-        .then((response) => response.json())
-        .then((data) => {
-            console.log(data);
-            navigation.navigate('ListAnnounce');
-        });
+    .then((response) => response.json())
+    .then((data) => {
+        console.log(data);
+        navigation.navigate('ListAnnounce');
+    }).catch((err) => {
+      alert(err);
+    });
 
   };
 

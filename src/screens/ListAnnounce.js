@@ -18,31 +18,29 @@ const ListAnnounce = ({ navigation }) => {
   //console.log(getTokenFromStorageAsync());
   
   const getOffersUser =  async() => {
-  fetch('https://localhost:8443/offers', {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + getTokenFromStorageAsync(),
-    }, 
-  }
-  ).then((response) => response.json())
-   .then((data) => {
-    console.log(data)
-    setOffers(data);
-   
-  });
-};
+    fetch('https://localhost:8443/offers', {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + getTokenFromStorageAsync(),
+      }, 
+    }
+    ).then((response) => response.json())
+    .then((data) => {
+      console.log(data)
+      setOffers(data);
+    
+    }).catch((err) => {
+      alert(err);
+    });
+  };
   
-  
-    useEffect(() => {
-      // Met à jour le titre du document via l’API du navigateur
-      getOffersUser();
-    },[]);
+  useEffect(() => {
+    // Met à jour le titre du document via l’API du navigateur
+    getOffersUser();
+  },[]);
 
-  
-
-  
   return(
     
     <ScrollView>
@@ -56,8 +54,6 @@ const ListAnnounce = ({ navigation }) => {
     </ScrollView>
     )
     
-
-     
 };
 
 const styles = StyleSheet.create({

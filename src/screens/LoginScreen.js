@@ -23,18 +23,20 @@ const login = () => {
           email: email,
           password: password
         })
-      })
-        .then((response) => response.json())
-        .then((data) => {
-            if(data.code){
-                return alert(data.message)
-            }
-          AsyncStorage.setItem(
-            'token',data.token
-          );
-          AsyncStorage
-          navigation.navigate('Profile')
-        });
+    })
+    .then((response) => response.json())
+    .then((data) => {
+        if(data.code){
+            return alert(data.message)
+        }
+        AsyncStorage.setItem(
+        'token',data.token
+        );
+        AsyncStorage
+        navigation.navigate('Profile')
+    }).catch((err) => {
+        alert(err)
+    });
 };
 
     return (
