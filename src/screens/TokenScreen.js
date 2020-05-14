@@ -13,7 +13,7 @@ const LoginScreen = ({ navigation }) => {
 
     const offer = () => {
         fetch('https://localhost:8443/send_invitation/'+ token, {
-            method: 'POST',
+            method: 'GET',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
