@@ -1,30 +1,27 @@
 import React, { memo } from 'react';
-import Background from '../components/Background';
-import Logo from '../components/Logo';
-
-import Button from '../components/Button';
-import Paragraph from '../components/Paragraph';
 import  ListItem  from '../components/ListItem';
 import { StyleSheet } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
-
+import { AsyncStorage } from 'react-native';
 
 
 const ListAnnounce = ({ navigation }) => {
   
   
-   /* try {
-      const value = await AsyncStorage.getItem('token');
-      if (value !== null) {
-        // We have data!!
-        console.log(value);
-      }
-    } catch (error) {
-      // Error retrieving data
-    }
-  };
-  */
+  const value = AsyncStorage.getItem('token');
+  console.log(value);
+  
+  fetch('https://localhost:8443/offer', {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + value,
+        },
+      
+      })
+
   return(
     <ListItem children={{'title':"test", 'company':"test2", 'offerdesc':"test3", 'place':"test","type":"testtest"}}>
 
