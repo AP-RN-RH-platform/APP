@@ -7,7 +7,7 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 //const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
 
 const ListItem = ({ children }) => (
-  <Card style={styles.ard}>
+  <Card style={styles.card}>
     <Card.Title title={children.title} subtitle={children.company}  />
     <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
     <Card.Content>
