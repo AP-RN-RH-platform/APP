@@ -19,7 +19,7 @@ const CreateOfferScreen = ({ navigation }) => {
   const [place,setPlace]= useState("");
 
 
-  
+
   const getTokenFromStorageAsync = async () => {
     var value = await AsyncStorage.getItem('token')
     return value
@@ -52,7 +52,7 @@ const CreateOfferScreen = ({ navigation }) => {
           console.log(data);
           navigation.navigate('ListAnnounce')
         });
-    
+
 
   };
 
@@ -64,7 +64,7 @@ const CreateOfferScreen = ({ navigation }) => {
         returnKeyType="next"
         onChangeText={(text) => setLibelle(text)}
       />
-       
+
         <TextInput
           label="Description de l'entreprise"
           returnKeyType="next"
@@ -75,9 +75,9 @@ const CreateOfferScreen = ({ navigation }) => {
           returnKeyType="next"
           onChangeText={(text) => setOfferDescription(text)}
         />
-      
+
      <TextInput
-          label="Poste"
+          label="Lieu"
           returnKeyType="next"
           onChangeText={(text) => setPlace(text)}
         />

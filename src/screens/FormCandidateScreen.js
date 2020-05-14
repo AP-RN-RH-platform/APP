@@ -55,7 +55,6 @@ const FormCandidateScreen = ({ route,navigation }) => {
     }, []);
 
     const candidate = () => {
-        //send CV
         RNFetchBlob.fetch('POST', 'https://localhost:8443/media_objects', {
             Authorization : 'Bearer ' + getTokenFromStorageAsync(),
             'Content-Type' : 'multipart/form-data',
@@ -63,10 +62,6 @@ const FormCandidateScreen = ({ route,navigation }) => {
         ])
         .then((response) => {
             const res = response.json();
-            //console.log("file log : ",res);
-            const cv_iri = "/media_objects/"+res.id;
-            //console.log("CV IRI : ",cv_iri);
-
             const body = JSON.stringify({
                 lastname: user.lastname,
                 firstname: user.firstname,
@@ -78,10 +73,10 @@ const FormCandidateScreen = ({ route,navigation }) => {
                 motives: motivation,
                 expectedSalary: parseInt(salary),
                 offer: "/offers/"+route.params.id,
-                CV: cv_iri,
-                photo: user.photo,
-            });
-            //console.log("BODY : ",body);
+                CV: res["@id"]
+                // photo: user.photo,
+            }, null, 2);
+            console.log("BODY : ",body);
 
             //candidat
             fetch('https://localhost:8443/applications', {
