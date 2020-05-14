@@ -6,29 +6,28 @@ import Button from '../components/Button';
 import TextInput from '../components/TextInput';
 import { theme } from '../core/theme';
 
-import { AsyncStorage } from 'react-native';
 
 const LoginScreen = ({ navigation }) => {
 
     const [token,setToken]= useState("");
 
     const offer = () => {
-        fetch('https://localhost:8443/send_invitation{token}', {
+        fetch('https://localhost:8443/send_invitation/'+ token, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                token: token
-            })
+            }
         })
             .then((response) => response.json())
             .then((data) => {
-                AsyncStorage.setItem(
-                    'token',data.token
-                );
-                navigation.navigate('Offre')
+                if(data.detail){
+                    return alert(data.detail)
+                }
+                navigation.navigate('Offer',{
+                    data
+                  });
+
             });
     };
 
