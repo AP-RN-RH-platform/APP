@@ -39,7 +39,7 @@ const OfferScreen = ({ route,navigation }) => {
         <List.Subheader style={styles.taille}>Date de début : { route.params.data.beginAt.substring(0,10) }</List.Subheader>
      </List.Section>
       <Button mode="contained" onPress={() => navigation.navigate('FormCandidate')}>
-              Valider
+              CANDIDATER
       </Button>
     </Background>
     </ScrollView>
