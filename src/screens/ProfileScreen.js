@@ -67,10 +67,6 @@ if(getTokenFromStorageAsync() !== null){
             <Button mode="contained" onPress={() => navigation.navigate('Token')}>
                 Postuler a une offre
             </Button>}
-            { role !== 'ROLE_RECRUITER' &&
-            <Button mode="contained"  onPress={() => navigation.navigate('Token')}>
-            Offre via Token
-            </Button>}
             <Button style={styles.bkColor}mode="contained"  onPress={() => logout()} >
                 Déconnexion
             </Button>
