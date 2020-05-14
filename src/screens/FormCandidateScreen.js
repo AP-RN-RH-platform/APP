@@ -49,6 +49,8 @@ const FormCandidateScreen = ({ route,navigation }) => {
             .then((data) => {
                 setRole(data.roles[0])
                 setUser(data)
+            }).catch((err) => {
+                alert(err.message)
             });
     }, []);
 
@@ -105,9 +107,11 @@ const FormCandidateScreen = ({ route,navigation }) => {
                 }
             }).catch((err) => {
                 console.log(err)
+                alert(err.message)
             });
         }).catch((err) => {
             console.log(err)
+            alert(err.message)
         })
     };
 
