@@ -73,8 +73,8 @@ const FormCandidateScreen = ({ route,navigation }) => {
                 motives: motivation,
                 expectedSalary: parseInt(salary),
                 offer: "/offers/"+route.params.id,
-                CV: res["@id"]
-                // photo: user.photo,
+                CV: res["@id"],
+                photo: user.photo
             }, null, 2);
             console.log("BODY : ",body);
 
