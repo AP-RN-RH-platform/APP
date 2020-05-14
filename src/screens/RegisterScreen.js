@@ -74,7 +74,7 @@ const RegisterScreen = ({ navigation }) => {
               photo:photo_iri,
               address:address,
               city:city,
-              role: [
+              roles: [
                 "ROLE_APPLICANT"
               ]
             })
@@ -105,7 +105,7 @@ const RegisterScreen = ({ navigation }) => {
             photo:"",
             address:address,
             city:city,
-            role: [
+            roles: [
               "ROLE_APPLICANT"
             ]
           })
