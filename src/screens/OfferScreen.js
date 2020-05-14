@@ -4,6 +4,8 @@ import Background from '../components/Background';
 import Button from '../components/Button';
 
 import { List } from 'react-native-paper';
+import { Title } from 'react-native-paper';
+
 const OfferScreen = ({ route,navigation }) => {
 
 
@@ -31,15 +33,15 @@ const OfferScreen = ({ route,navigation }) => {
     <ScrollView>
     <Background>
         <List.Section>
-        <List.Subheader style={styles.taille}>Offre : { route.params.data.name }</List.Subheader>
+            <Title style={styles.title}>Titre du poste: { route.params.data.name }</Title>
         <List.Subheader style={styles.taille}>Description de l'entreprise : { route.params.data.companyDescription }</List.Subheader>
         <List.Subheader style={styles.taille}>Description de l'offre : { route.params.data.offerDescription }</List.Subheader>
-        <List.Subheader style={styles.taille}>Poste : { route.params.data.place }</List.Subheader>
+        <List.Subheader style={styles.taille}>Ville : { route.params.data.place }</List.Subheader>
         <List.Subheader style={styles.taille}>Type de contrat : { route.params.data.contractType }</List.Subheader>
         <List.Subheader style={styles.taille}>Date de début : { route.params.data.beginAt.substring(0,10) }</List.Subheader>
      </List.Section>
-      <Button mode="contained" onPress={() => navigation.navigate('FormCandidate')}>
-              Valider
+      <Button mode="contained" onPress={() => navigation.navigate('FormCandidate',route.params.data)}>
+              CANDIDATER
       </Button>
     </Background>
     </ScrollView>
@@ -49,6 +51,15 @@ const OfferScreen = ({ route,navigation }) => {
 const styles = StyleSheet.create({
     taille: {
       width:300,
+    },
+    title: {
+        width:300,
+        borderWidth: 4,
+        borderColor: "#20232a",
+        marginTop: 16,
+        paddingVertical: 8,
+        textAlign: "center",
+
     }
   });
 
