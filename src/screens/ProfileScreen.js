@@ -11,13 +11,11 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 const ProfileScreen = ({ navigation }) => {
 
-
 const value = AsyncStorage.getItem('token');
 
     const logout = () => {
         AsyncStorage.removeItem('token', (err) => console.log('userId', err));
         navigation.navigate('Login');
-
     }
 
 
@@ -26,6 +24,9 @@ if(value !== null){
         <Background>
             <Logo />
             <Text>Mon profil</Text>
+            <Button mode="contained"  onPress={() => navigation.navigate('Token')}>
+            Offre via Token
+            </Button>
             <Button mode="contained"  onPress={() => logout()} >
         Déconnexion
       </Button>
