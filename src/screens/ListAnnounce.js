@@ -46,11 +46,11 @@ const ListAnnounce = ({ navigation }) => {
   return(
     
     <ScrollView>
-     { offers.map( (offer) => 
+     { offers.map( (offer,i) => 
      <TouchableOpacity onPress={() => navigation.navigate('OfferDetail',{
       offer
     })}>
-     <ListItem children={{'title':offer.name, 'company':offer.companyDescription, 'offerdesc':offer.offerDescription, 'place':offer.place,"type":offer.type}}/>
+     <ListItem key={i} children={{'title':offer.name, 'company':offer.companyDescription, 'offerdesc':offer.offerDescription, 'place':offer.place,"type":offer.type}}/>
      </TouchableOpacity>
     )}
     </ScrollView>
