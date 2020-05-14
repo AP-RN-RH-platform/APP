@@ -6,7 +6,7 @@ import Button from '../components/Button';
 import TextInput from '../components/TextInput';
 import { theme } from '../core/theme';
 
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const LoginScreen = ({ navigation }) => {
 
@@ -27,6 +27,9 @@ const login = () => {
       })
         .then((response) => response.json())
         .then((data) => {
+            if(data.code){
+                return alert(data.message)
+            }
           AsyncStorage.setItem(
             'token',data.token
           );
