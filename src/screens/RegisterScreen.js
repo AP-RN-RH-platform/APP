@@ -92,7 +92,10 @@ const RegisterScreen = ({ navigation }) => {
           genre:gender,
           photo:picture.uri,
           address:address,
-          city:city
+          city:city,
+          role: [
+            "ROLE_APPLICANT"
+          ]
         })
       })
         .then((response) => response.json())
