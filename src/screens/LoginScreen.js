@@ -1,16 +1,39 @@
 import React, { memo, useState, useContext } from 'react';
-import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
+import { TouchableOpacity, StyleSheet, Text, View, } from 'react-native';
 import Background from '../components/Background';
 import Logo from '../components/Logo';
-import Header from '../components/Header';
 import Button from '../components/Button';
 import TextInput from '../components/TextInput';
-import BackButton from '../components/BackButton';
 import { theme } from '../core/theme';
 
-
+import { AsyncStorage } from 'react-native';
 
 const LoginScreen = ({ navigation }) => {
+
+const [email,setEmail]= useState("");
+const [password,setPassword]= useState("");
+
+const login = () => {
+    fetch('https://localhost:8443/authentication_token', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password
+        })
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          AsyncStorage.setItem(
+            'token',data.token
+          );
+          navigation.navigate('Profile')
+        });
+};
+
     return (
         <Background>
             <Logo />
@@ -21,12 +44,14 @@ const LoginScreen = ({ navigation }) => {
                 autoCompleteType="email"
                 textContentType="emailAddress"
                 keyboardType="email-address"
+                onChangeText={(text) => setEmail(text)}
             />
 
             <TextInput
                 label="Password"
                 returnKeyType="done"
                 secureTextEntry
+                onChangeText={(text) => setPassword(text)}
             />
 
             <View style={styles.forgotPassword}>
@@ -37,8 +62,8 @@ const LoginScreen = ({ navigation }) => {
                 </TouchableOpacity>
             </View>
 
-            <Button mode="contained" >
-                Login
+            <Button mode="contained"  onPress={() => login()} >
+                Se connecter
             </Button>
 
             <View style={styles.row}>

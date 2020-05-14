@@ -1,59 +1,259 @@
 import React, { memo, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView,Image } from 'react-native';
 import Background from '../components/Background';
-import Logo from '../components/Logo';
 import Header from '../components/Header';
 import Button from '../components/Button';
 import TextInput from '../components/TextInput';
 import { theme } from '../core/theme';
 
+import ImagePicker from 'react-native-image-picker'
+
+import { RadioButton, List } from 'react-native-paper';
+
 const RegisterScreen = ({ navigation }) => {
+
+  const [checked, setChecked] = useState('candidat');
+  const [email,setEmail]= useState("");
+  const [password,setPassword]= useState("");
+  const [confirmPassword,setConfirmPassword]= useState("");
+  const [firstname,setFirstname]= useState("");
+  const [lastname,setLastName]= useState("");
+  const [gender,setGender]= useState("homme");
+  const [picture,setPicture]= useState(null);
+  const [address,setAddress]= useState("");
+  const [city,setCity]= useState("");
+
+
+  const handleChoosePhoto = () => {
+    const options = {
+      noData: true,
+    }
+    ImagePicker.launchImageLibrary(options, response => {
+      if (response.uri) {
+        setPicture(response)
+      }
+    })
+  }
+
+  const createFormData = (photo, body) => {
+    const data = new FormData();
+  
+    data.append("photo", {
+      name: photo.fileName,
+      type: photo.type,
+      uri: photo.uri
+    });
+  
+    // Object.keys(body).forEach(key => {
+    //   data.append(key, body[key]);
+    // });
+  
+    return data;
+  };
+
+  
+
+  const register = () => {
+
+    if(password === "" || confirmPassword === "" || email === ""){
+      return alert("Veuillez remplir tout les champs requis.");
+    }
+    if(password !== confirmPassword){
+      return alert("Les deux mot de passe ne correspondent pas.");
+    }
+
+    if(checked === "candidat"){
+
+      fetch('https://localhost:8443/media_objects', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: createFormData(picture)
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+        });
+
+
+      fetch('https://localhost:8443/users', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+          firstname:firstname,
+          lastname:lastname,
+          genre:gender,
+          photo:picture.uri,
+          address:address,
+          city:city
+        })
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          navigation.navigate('Login')
+        });
+    } else {
+      fetch('https://localhost:8443/users', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+          roles:["ROLE_RECRUITER"]
+        })
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          navigation.navigate('Login')
+        });
+    }
+
+  };
+
   return (
+    <ScrollView>
     <Background>
-
-      <Logo />
-
-      <Header>Create Account</Header>
-
-
+        <List.Section >
+        <List.Subheader>Creer un compte</List.Subheader>
+        <List.Item
+          title="Candidat"
+          left={() => 
+            <RadioButton
+            value="candidat"
+            status={checked === 'candidat' ? 'checked' : 'unchecked'}
+            onPress={() => { setChecked('candidat') }}
+          />}
+       />
+        <List.Item
+          title="Recruteur"
+          left={() => 
+          <RadioButton
+            value="recruteur"
+            status={checked === 'recruteur' ? 'checked' : 'unchecked'}
+            onPress={() => { setChecked('recruteur'); }}
+          />}
+       />
+     </List.Section>
       <TextInput
         label="Email"
         returnKeyType="next"
-        autoCapitalize="none"
         autoCompleteType="email"
         textContentType="emailAddress"
         keyboardType="email-address"
+        onChangeText={(text) => setEmail(text)}
       />
-
-      <TextInput
-        label="Password"
-        returnKeyType="done"
-        secureTextEntry
-      />
+      { checked === 'candidat' && 
+        <View style={styles.bk}>
         <TextInput
-        label="Password Validation"
+          label="Prénom"
+          returnKeyType="next"
+          textContentType="name"
+          onChangeText={(text) => setFirstname(text)}
+        />
+        <TextInput
+          label="Nom"
+          returnKeyType="next"
+          textContentType="familyName"
+          onChangeText={(text) => setLastName(text)}
+        />
+                <List.Section >
+        <List.Subheader>Genre</List.Subheader>
+        <List.Item
+          title="Homme"
+          left={() => 
+            <RadioButton
+            value="homme"
+            status={gender === 'homme' ? 'checked' : 'unchecked'}
+            onPress={() => { setGender('homme') }}
+          />}
+       />
+        <List.Item
+          title="Femme"
+          left={() => 
+          <RadioButton
+            value="femme"
+            status={gender === 'femme' ? 'checked' : 'unchecked'}
+            onPress={() => { setGender('femme'); }}
+          />}
+       />
+     </List.Section>
+     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        {picture && (
+          <Image
+            source={{ uri: picture.uri }}
+            style={{ width: 150, height: 150 }}
+          />
+        )}
+       
+     <Button mode="contained" onPress={() => handleChoosePhoto()} >  Choisissez une photo </Button>
+      </View>
+        <TextInput
+          label="Adresse"
+          returnKeyType="next"
+          textContentType="fullStreetAddress"
+          onChangeText={(text) => setAddress(text)}
+        />
+        <TextInput
+          label="Ville"
+          returnKeyType="next"
+          autoCapitalize="none"
+          textContentType="location"
+          onChangeText={(text) => setCity(text)}
+        />
+       
+        </View>
+
+    }
+     <TextInput
+          label="Mot de passe"
+          returnKeyType="next"
+          secureTextEntry
+          textContentType="password"
+          onChangeText={(text) => setPassword(text)}
+        />
+        <TextInput
+        label="Confirmation mot de passe"
         returnKeyType="done"
         secureTextEntry
+        textContentType="password"
+        onChangeText={(text) => setConfirmPassword(text)}
   />
 
 
-      <Button mode="contained">
-        Inscription
+      <Button mode="contained"  onPress={() => register()} >
+        Valider
       </Button>
 
       <View style={styles.row}>
-        <Text style={styles.label}>Already have an account? </Text>
+        <Text style={styles.label}>Déjà inscrit? </Text>
         <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-          <Text style={styles.link}>Login</Text>
+          <Text style={styles.link}>Se connecter</Text>
         </TouchableOpacity>
       </View>
     </Background>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   label: {
-    color: theme.colors.secondary,
+    color: theme.colors.recruteurary,
+  },
+  bk: {
+    flex: 1,
+    width: '100%'
   },
   button: {
     marginTop: 24,
