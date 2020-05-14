@@ -5,7 +5,7 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Surface } from 'react-native-paper';
 import Background from '../components/Background';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 
 
 const ListAnnounce = ({ navigation }) => {
@@ -28,7 +28,7 @@ const ListAnnounce = ({ navigation }) => {
   }
   ).then((response) => response.json())
    .then((data) => {
-    
+    console.log(data)
     setOffers(data);
    
   });
@@ -47,8 +47,11 @@ const ListAnnounce = ({ navigation }) => {
     
     <ScrollView>
      { offers.map( (offer) => 
+     <TouchableOpacity onPress={() => navigation.navigate('OfferDetail',{
+      offer
+    })}>
      <ListItem children={{'title':offer.name, 'company':offer.companyDescription, 'offerdesc':offer.offerDescription, 'place':offer.place,"type":offer.type}}/>
-    
+     </TouchableOpacity>
     )}
     </ScrollView>
     )
