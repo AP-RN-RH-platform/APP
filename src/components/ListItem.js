@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   },
   card: {
     fontSize: 12,
-    padding: 4,
+    padding: 30,
   },
 });
 export default ListItem;
