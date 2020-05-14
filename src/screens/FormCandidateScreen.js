@@ -16,7 +16,7 @@ const FormCandidateScreen = ({ route,navigation }) => {
 
     const [motivation,setMotivation]= useState("");
     const [salary,setSalary]= useState("");
-    const [picture,setCV]= useState(null);
+    const [cv,setCV]= useState(null);
 
     const getTokenFromStorageAsync = async () => {
         var value = await AsyncStorage.getItem('token')
