@@ -14,6 +14,7 @@ import RegisterScreen from "./src/screens/RegisterScreen";
 import HomeScreen from "./src/screens/HomeScreen";
 import ForgotPasswordScreen from "./src/screens/ForgotPasswordScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
+import ListAnnounce from './src/screens/ListAnnounce';
 
 
 const Stack = createStackNavigator();
@@ -26,8 +27,8 @@ const App: () => React$Node = () => {
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Register" component={RegisterScreen} />
           <Stack.Screen name="ForgotPassword" component={ForgotPasswordScreen} />
-
           <Stack.Screen name="Profile" component={ProfileScreen} />
+          <Stack.Screen name="ListAnnounce" component={ListAnnounce} />
 
 
         </Stack.Navigator>
