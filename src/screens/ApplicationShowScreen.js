@@ -4,6 +4,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import {RadioButton, List, Title} from "react-native-paper";
 import Button from '../components/Button';
 import Background from "../components/Background";
+import { API_URL } from 'react-native-dotenv';
 
 
 const ApplicationShowScreen = ({route, navigation}) => {
@@ -17,30 +18,38 @@ const ApplicationShowScreen = ({route, navigation}) => {
   }
 
   const updateApplication = async () => {
+    console.log("checked : ",checked);
     if(checked === null) {
       return;
     }
-    const response = await fetch(`https://localhost:8443/applications/${applicationId}`,
+    fetch(API_URL+`/applications/${applicationId}`,
       {
-        method: 'PATCH',
+        method: 'PUT',
         headers: {
-          'Accept': 'application/ld+json',
-          'Content-Type': 'application/merge-patch+json',
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
           'Authorization': 'Bearer ' + getTokenFromStorageAsync(),
         },
         body: JSON.stringify({status: checked})
+      }).then((response) => {
+        const status = response.status;
+        if (status === 200) {
+          navigation.navigate('OfferDetail', { id: application.id })
+        }
+        else {
+          response.json().then((data) => {
+            console.log(data);
+            alert(data.detail);
+          })
+        }
       });
-    const status = response.status;
-    if (status === 200) {
-      navigation.navigate('OfferDetail', { id: application.id })
-    }
 
   }
 
 
   useEffect( () => {
     const fetchData = async () => {
-      const response = await fetch(`https://localhost:8443/applications/${applicationId}`,
+      const response = await fetch(API_URL+`/applications/${applicationId}`,
         {
           method: 'GET',
           headers: {

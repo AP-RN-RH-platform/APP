@@ -15,6 +15,7 @@ import HomeScreen from "./src/screens/HomeScreen";
 import ForgotPasswordScreen from "./src/screens/ForgotPasswordScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
 import ListAnnounce from './src/screens/ListAnnounce';
+import ListApplication from './src/screens/ListApplication';
 import CreateOffer from './src/screens/CreateOfferScreen';
 import TokenScreen from "./src/screens/TokenScreen";
 import OfferScreen from './src/screens/OfferScreen';
@@ -40,6 +41,7 @@ const App: () => React$Node = () => {
           <Stack.Screen name="FormCandidate" component={FormCandidateScreen} options={{ title: 'Formulaire Candidature' }} />
           <Stack.Screen name="OfferDetail" component={OfferDetailScreen} options={{ title: 'Offre' }} />
           <Stack.Screen name="ApplicationShow" component={ApplicationShowScreen} options={{ title: 'Candidature' }} />
+          <Stack.Screen name="ListApplication" component={ListApplication} options={{ title: 'Mes candidatures' }} />
         </Stack.Navigator>
       </NavigationContainer>
     );

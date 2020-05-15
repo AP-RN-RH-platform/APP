@@ -32,14 +32,14 @@ const OfferDetailScreen = ({ route,navigation }) => {
         })
         .then((response) => response.json())
         .then((data) => {
-          setRole(data.roles[0])
+          setRole(data.roles)
         }).catch((err) => {
           alert(err)
         });
       }, []);
 
     useEffect(() => {
-        fetch('https://localhost:8443/offers/' + route.params.id,
+        fetch(API_URL+'/offers/' + route.params.id,
       {
             method: 'GET',
             headers: {
@@ -54,8 +54,6 @@ const OfferDetailScreen = ({ route,navigation }) => {
             console.log("OFFER DETAIL SCREEN", data)
           });
       }, []);
-
-
 
   const sendInvitation = () => {
     fetch(API_URL+'/invitations', {
@@ -95,7 +93,7 @@ const OfferDetailScreen = ({ route,navigation }) => {
         </List.Section>
       }
 
-     { role === 'ROLE_RECRUITER' &&
+     { role.includes("ROLE_RECRUITER") &&
      <TextInput
                 label="Email"
                 returnKeyType="next"
@@ -105,7 +103,7 @@ const OfferDetailScreen = ({ route,navigation }) => {
                 keyboardType="email-address"
                 onChangeText={(text) => setEmail(text)}
             />}
-    { role === 'ROLE_RECRUITER' &&
+    { role.includes("ROLE_RECRUITER") &&
       <Button mode="contained" onPress={() => sendInvitation()}>
               Envoyer l'offre
       </Button>
