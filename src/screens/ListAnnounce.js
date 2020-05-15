@@ -9,14 +9,14 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 
 
 const ListAnnounce = ({ navigation }) => {
-  var [offers, setOffers] = useState([]);
-  
+  const [offers, setOffers] = useState([])
+
   const getTokenFromStorageAsync = async () => {
     var value = await AsyncStorage.getItem('token')
     return value
   }
   //console.log(getTokenFromStorageAsync());
-  
+
   const getOffersUser =  async() => {
   fetch('https://localhost:8443/offers', {
     method: 'GET',
@@ -24,40 +24,40 @@ const ListAnnounce = ({ navigation }) => {
       Accept: 'application/json',
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + getTokenFromStorageAsync(),
-    }, 
+    },
   }
   ).then((response) => response.json())
    .then((data) => {
     console.log(data)
     setOffers(data);
-   
+
   });
 };
-  
-  
+
+
     useEffect(() => {
       // Met à jour le titre du document via l’API du navigateur
       getOffersUser();
     },[]);
 
-  
 
-  
+
+
   return(
-    
+
     <ScrollView>
-     { offers.map( (offer,i) => 
+     { offers.map( (offer,i) =>
      <TouchableOpacity onPress={() => navigation.navigate('OfferDetail',{
-      offer
+      id: offer.id
     })}>
-     <ListItem key={i} children={{'title':offer.name, 'company':offer.companyDescription, 'offerdesc':offer.offerDescription, 'place':offer.place,"type":offer.type}}/>
+     <ListItem key={offer.id} children={{'title':offer.name, 'company':offer.companyDescription, 'offerdesc':offer.offerDescription, 'place':offer.place,"type":offer.type}}/>
      </TouchableOpacity>
     )}
     </ScrollView>
     )
-    
 
-     
+
+
 };
 
 const styles = StyleSheet.create({

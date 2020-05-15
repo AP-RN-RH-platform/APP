@@ -20,7 +20,7 @@ import TokenScreen from "./src/screens/TokenScreen";
 import OfferScreen from './src/screens/OfferScreen';
 import FormCandidateScreen from "./src/screens/FormCandidateScreen";
 import OfferDetailScreen from './src/screens/OfferDetailScreen';
-
+import ApplicationShowScreen from './src/screens/ApplicationShowScreen'
 
 const Stack = createStackNavigator();
 
@@ -37,11 +37,11 @@ const App: () => React$Node = () => {
           <Stack.Screen name="CreateOffer" component={CreateOffer} options={{ title: 'Créer une offre' }} />
           <Stack.Screen name="Token" component={TokenScreen} options={{ title: 'Accéder à une offre' }}/>
           <Stack.Screen name="Offer" component={OfferScreen} />
-          <Stack.Screen name="FormCandidate" component={FormCandidateScreen} options={{ title: 'Candidature' }} />
+          <Stack.Screen name="FormCandidate" component={FormCandidateScreen} options={{ title: 'Formulaire Candidature' }} />
           <Stack.Screen name="OfferDetail" component={OfferDetailScreen} options={{ title: 'Offre' }} />
-
+          <Stack.Screen name="ApplicationShow" component={ApplicationShowScreen} options={{ title: 'Candidature' }} />
         </Stack.Navigator>
-        </NavigationContainer>
+      </NavigationContainer>
     );
 }
 
