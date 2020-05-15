@@ -1,5 +1,5 @@
-import React, { memo, useState,useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView,Image } from 'react-native';
+import React, {memo, useEffect, useState} from 'react';
+import {ScrollView, StyleSheet, Text} from 'react-native';
 import Background from '../components/Background';
 import Button from '../components/Button';
 import TextInput from "../components/TextInput";
@@ -14,10 +14,11 @@ const OfferDetailScreen = ({ route,navigation }) => {
 
     const [role,setRole]= useState("");
 
+    const [offer, setOffer] = useState(null);
+
     const getTokenFromStorageAsync = async () => {
-        var value = await AsyncStorage.getItem('token')
-        return value
-      }
+      return await AsyncStorage.getItem('token')
+    }
 
     useEffect(() => {
         fetch(API_URL+'/current_user',
@@ -37,6 +38,25 @@ const OfferDetailScreen = ({ route,navigation }) => {
         });
       }, []);
 
+    useEffect(() => {
+        fetch('https://localhost:8443/offers/' + route.params.id,
+      {
+            method: 'GET',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + getTokenFromStorageAsync(),
+            }
+          })
+          .then((response) => response.json())
+          .then((data) => {
+            setOffer(data)
+            console.log("OFFER DETAIL SCREEN", data)
+          });
+      }, []);
+
+
+
   const sendInvitation = () => {
     fetch(API_URL+'/invitations', {
         method: 'POST',
@@ -47,7 +67,7 @@ const OfferDetailScreen = ({ route,navigation }) => {
         },
         body: JSON.stringify({
           email: email,
-          offer: "/offers/"+ route.params.offer.id
+          offer: "/offers/"+ offer.id
         })
     })
     .then((response) => response.json())
@@ -63,14 +83,18 @@ const OfferDetailScreen = ({ route,navigation }) => {
   return (
     <ScrollView>
     <Background>
+      {
+        offer &&
         <List.Section>
-        <Title style={styles.title}>Titre du poste : { route.params.offer.name }</Title>
-        <List.Subheader style={styles.taille}>Description de l'entreprise : { route.params.offer.companyDescription }</List.Subheader>
-        <List.Subheader style={styles.taille}>Description de l'offre : { route.params.offer.offerDescription }</List.Subheader>
-        <List.Subheader style={styles.taille}>Ville : { route.params.offer.place }</List.Subheader>
-        <List.Subheader style={styles.taille}>Type de contrat : { route.params.offer.contractType }</List.Subheader>
-        <List.Subheader style={styles.taille}>Date de début : { route.params.offer.beginAt.substring(0,10) }</List.Subheader>
-     </List.Section>
+          <Title style={styles.title}>Titre du poste : { offer.name }</Title>
+          <List.Subheader style={styles.taille}>Description de l'entreprise : { offer.companyDescription }</List.Subheader>
+          <List.Subheader style={styles.taille}>Description de l'offre : { offer.offerDescription }</List.Subheader>
+          <List.Subheader style={styles.taille}>Ville : { offer.place }</List.Subheader>
+          <List.Subheader style={styles.taille}>Type de contrat : { offer.contractType }</List.Subheader>
+          <List.Subheader style={styles.taille}>Date de début : { offer.beginAt.substring(0,10) }</List.Subheader>
+        </List.Section>
+      }
+
      { role === 'ROLE_RECRUITER' &&
      <TextInput
                 label="Email"
@@ -84,7 +108,12 @@ const OfferDetailScreen = ({ route,navigation }) => {
     { role === 'ROLE_RECRUITER' &&
       <Button mode="contained" onPress={() => sendInvitation()}>
               Envoyer l'offre
-      </Button>}
+      </Button>
+    }
+    {offer && offer.applications ? <Text>Liste des candidatures : </Text> : <Text>""</Text>}
+    {offer && offer.applications && offer.applications.map((application, index) =>
+      <Text key={index} onPress={() => { navigation.navigate('ApplicationShow', {'applicationId': application.id}) }}>{`${application.firstname} ${application.lastname} - ${application.status}`}</Text>
+    )}
     </Background>
     </ScrollView>
   );
