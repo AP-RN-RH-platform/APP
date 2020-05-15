@@ -6,6 +6,7 @@ import Button from '../components/Button';
 import TextInput from '../components/TextInput';
 import { theme } from '../core/theme';
 import AsyncStorage from '@react-native-community/async-storage';
+import { API_URL } from 'react-native-dotenv';
 
 const LoginScreen = ({ navigation }) => {
 
@@ -13,7 +14,8 @@ const [email,setEmail]= useState("");
 const [password,setPassword]= useState("");
 
 const login = () => {
-    fetch('https://localhost:8443/authentication_token', {
+    console.log("API : ",API_URL);
+    fetch(API_URL+'/authentication_token', {
         method: 'POST',
         headers: {
           Accept: 'application/json',

@@ -5,6 +5,7 @@ import Header from '../components/Header';
 import Button from '../components/Button';
 import TextInput from '../components/TextInput';
 import { theme } from '../core/theme';
+import { API_URL } from 'react-native-dotenv';
 
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -31,7 +32,7 @@ const CreateOfferScreen = ({ navigation }) => {
       return alert("Veuillez remplir tout les champs requis.");
     }
 
-    fetch('https://localhost:8443/offers', {
+    fetch(API_URL+'/offers', {
       method: 'POST',
       headers: {
         Accept: 'application/json',

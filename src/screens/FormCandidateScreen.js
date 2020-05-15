@@ -2,6 +2,7 @@ import React, { memo, useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView,Image } from 'react-native';
 import Background from '../components/Background';
 import Button from '../components/Button';
+import { API_URL } from 'react-native-dotenv';
 
 import TextInput from "../components/TextInput";
 import ImagePicker from "react-native-image-picker";
@@ -36,7 +37,7 @@ const FormCandidateScreen = ({ route,navigation }) => {
     }
 
     useEffect(() => {
-        fetch('https://localhost:8443/current_user',
+        fetch(API_URL+'/current_user',
             {
                 method: 'GET',
                 headers: {
@@ -55,7 +56,7 @@ const FormCandidateScreen = ({ route,navigation }) => {
     }, []);
 
     const candidate = () => {
-        RNFetchBlob.fetch('POST', 'https://localhost:8443/media_objects', {
+        RNFetchBlob.fetch('POST', API_URL+'/media_objects', {
             Authorization : 'Bearer ' + getTokenFromStorageAsync(),
             'Content-Type' : 'multipart/form-data',
         }, [{ name : 'file', filename : cv.fileName, type: cv.type, data:RNFetchBlob.wrap(cv.uri)},
@@ -79,7 +80,7 @@ const FormCandidateScreen = ({ route,navigation }) => {
             console.log("BODY : ",body);
 
             //candidat
-            fetch('https://localhost:8443/applications', {
+            fetch(API_URL+'/applications', {
                 method: 'POST',
                 headers: {
                     Authorization : 'Bearer ' + getTokenFromStorageAsync(),

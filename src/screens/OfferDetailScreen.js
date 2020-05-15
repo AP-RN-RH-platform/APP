@@ -4,6 +4,7 @@ import Background from '../components/Background';
 import Button from '../components/Button';
 import TextInput from "../components/TextInput";
 import AsyncStorage from '@react-native-community/async-storage';
+import { API_URL } from 'react-native-dotenv';
 
 import {List, Title} from 'react-native-paper';
 
@@ -19,7 +20,7 @@ const OfferDetailScreen = ({ route,navigation }) => {
       }
 
     useEffect(() => {
-        fetch('https://localhost:8443/current_user',
+        fetch(API_URL+'/current_user',
           {
           method: 'GET',
           headers: {
@@ -37,7 +38,7 @@ const OfferDetailScreen = ({ route,navigation }) => {
       }, []);
 
   const sendInvitation = () => {
-    fetch('https://localhost:8443/invitations', {
+    fetch(API_URL+'/invitations', {
         method: 'POST',
         headers: {
             Accept: 'application/json',

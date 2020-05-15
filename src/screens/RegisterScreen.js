@@ -11,6 +11,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 import ImagePicker from 'react-native-image-picker'
 
 import { RadioButton, List } from 'react-native-paper';
+import { API_URL } from 'react-native-dotenv';
 
 const RegisterScreen = ({ navigation }) => {
 
@@ -52,14 +53,14 @@ const RegisterScreen = ({ navigation }) => {
 
     if(checked === "candidat"){
       if(picture !== null){
-        RNFetchBlob.fetch('POST', 'https://localhost:8443/media_objects', {
+        RNFetchBlob.fetch('POST', API_URL+'/media_objects', {
               Authorization : 'Bearer ' + getTokenFromStorageAsync(),
               'Content-Type' : 'multipart/form-data',
         }, [{ name : 'file', filename : picture.fileName, type: picture.type, data:RNFetchBlob.wrap(picture.uri)},
         ]).then((response) => {
           const res = response.json();
           const photo_iri = res.id ? "/media_objects/"+res.id : null;
-          fetch('https://localhost:8443/users', {
+          fetch(API_URL+'/users', {
             method: 'POST',
             headers: {
               Accept: 'application/json',
@@ -90,7 +91,7 @@ const RegisterScreen = ({ navigation }) => {
           alert(err.message)
         });
       } else {
-        fetch('https://localhost:8443/users', {
+        fetch(API_URL+'/users', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -119,7 +120,7 @@ const RegisterScreen = ({ navigation }) => {
         });
       }
     } else {
-      fetch('https://localhost:8443/users', {
+      fetch(API_URL+'/users', {
         method: 'POST',
         headers: {
           Accept: 'application/json',

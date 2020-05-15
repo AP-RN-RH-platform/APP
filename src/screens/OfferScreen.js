@@ -5,6 +5,7 @@ import Button from '../components/Button';
 
 import { List } from 'react-native-paper';
 import { Title } from 'react-native-paper';
+import { API_URL } from 'react-native-dotenv';
 
 const OfferScreen = ({ route,navigation }) => {
 
@@ -13,7 +14,7 @@ const OfferScreen = ({ route,navigation }) => {
 
 
 
-    //   fetch('https://localhost:8443/media_objects', {
+    //   fetch(API_URL+'/media_objects', {
     //     method: 'POST',
     //     headers: {
     //       Accept: 'application/json',

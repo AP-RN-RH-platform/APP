@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { Surface } from 'react-native-paper';
 import Background from '../components/Background';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { API_URL } from 'react-native-dotenv';
 
 
 const ListAnnounce = ({ navigation }) => {
@@ -18,7 +19,7 @@ const ListAnnounce = ({ navigation }) => {
   //console.log(getTokenFromStorageAsync());
   
   const getOffersUser =  async() => {
-    fetch('https://localhost:8443/offers', {
+    fetch(API_URL+'/offers', {
       method: 'GET',
       headers: {
         Accept: 'application/json',
