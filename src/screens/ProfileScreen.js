@@ -58,17 +58,25 @@ if(getTokenFromStorageAsync() !== null){
             <Image source={require('../assets/person.png')} style={styles.image} />
             <Text>Bonjour, { user.email }</Text>
             { role.includes("ROLE_RECRUITER") &&
-            <Button mode="contained" onPress={() => navigation.navigate('CreateOffer')}>
-                Créer une offre
-            </Button>
+            <>
+                <Button mode="contained" onPress={() => navigation.navigate('CreateOffer')}>
+                    Créer une offre
+                </Button>
+                <Button mode="contained" onPress={() => navigation.navigate('ListAnnounce')}>
+                    Mes annonces
+                </Button>
+            </>
             }
-            <Button mode="contained" onPress={() => navigation.navigate('ListAnnounce')}>
-                Mes annonces
-            </Button>
-            { !role.includes("ROLE_RECRUITER") &&
-            <Button mode="contained" onPress={() => navigation.navigate('Token')}>
-                Postuler a une offre
-            </Button>}
+            { role.includes("ROLE_APPLICANT") &&
+            <>
+                <Button mode="contained" onPress={() => navigation.navigate('Token')}>
+                    Postuler a une offre
+                </Button>
+                <Button mode="contained" onPress={() => navigation.navigate('ListApplication')}>
+                    Mes candidatures
+                </Button>
+            </>
+            }
             <Button style={styles.bkColor}mode="contained"  onPress={() => logout()} >
                 Déconnexion
             </Button>
