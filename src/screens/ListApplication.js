@@ -28,15 +28,41 @@ const ListApplication = ({ navigation }) => {
         },
       }
     ).then((response) => response.json())
-    .then((app) => {
-      setApplications(app)
+    .then(async (app) => {
+      let requests = app.forEach((application) => {
+          return new Promise((resolve) => {
+            fetch(API_URL+'/applications/'+application.id+'/offer',
+              {
+                method: 'GET',
+                headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json',
+                  'Authorization': 'Bearer ' + getTokenFromStorageAsync(),
+                },
+              }
+            ).then((response) => {
+              const code = response.status;
+              console.log("STATUS OFFER : ",code);
+              if(code < 300){
+                response.json().then((offer) => {
+                  const offer_obj = offer;
+                  console.log("App : ",application)
+                  console.log("Offer : ",offer_obj)
+                  application.offer = offer_obj;
+                  resolve(application);
+                })
+              }
+            })
+          });
+      });
+      await Promise.all(requests).then(() => setApplications(applications));
     });
   };
 
 
-  useEffect(() => {
+  useEffect(async () => {
     // Met à jour le titre du document via l’API du navigateur
-    getApplicationsUser();
+    await getApplicationsUser();
     console.log("applications ;; ", applications);
   },[]);
 
@@ -50,7 +76,7 @@ const ListApplication = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.navigate('ApplicationShow',{
           applicationId: application.id
         })}>
-          <ListItem key={application.id} children={{'title':application.name, 'company':application.companyDescription, 'applicationdesc':application.applicationDescription, 'place':application.place,"type":application.type}}/>
+          <ListItem key={application.id} children={{'title':application.offer.name, 'company':application.offer.companyDescription, 'applicationdesc':application.offer.applicationDescription, 'place':application.offer.place,"type":application.offer.type}}/>
         </TouchableOpacity>
       )}
     </ScrollView>
