@@ -6,6 +6,7 @@ import Logo from '../components/Logo';
 import Button from '../components/Button';
 
 import AsyncStorage from '@react-native-community/async-storage';
+import { API_URL } from 'react-native-dotenv';
 
 
 
@@ -31,7 +32,7 @@ const [user,setUser]= useState({});
       }
 
     useEffect(() => {
-        fetch('https://localhost:8443/current_user',
+        fetch(API_URL+'/current_user',
             {
             method: 'GET',
             headers: {
@@ -39,12 +40,13 @@ const [user,setUser]= useState({});
               'Content-Type': 'application/json',
               'Authorization': 'Bearer ' + getTokenFromStorageAsync(),
             }
-          })
-          .then((response) => response.json())
-          .then((data) => {
-
+        })
+        .then((response) => response.json())
+        .then((data) => {
             setRole(data.roles[0])
-          });
+        }).catch((err) => {
+            alert(err);
+        });
       }, []);
 
       

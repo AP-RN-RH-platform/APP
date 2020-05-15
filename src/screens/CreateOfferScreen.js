@@ -5,6 +5,7 @@ import Header from '../components/Header';
 import Button from '../components/Button';
 import TextInput from '../components/TextInput';
 import { theme } from '../core/theme';
+import { API_URL } from 'react-native-dotenv';
 
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -31,29 +32,29 @@ const CreateOfferScreen = ({ navigation }) => {
       return alert("Veuillez remplir tout les champs requis.");
     }
 
-      fetch('https://localhost:8443/offers', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + getTokenFromStorageAsync(),
-        },
-        body: JSON.stringify({
-          name: libelle,
-          companyDescription: companyDescription,
-          offerDescription: offerDescription,
-          beginAt: beginAt,
-          contractType: contractType,
-          place: place
-        })
+    fetch(API_URL+'/offers', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + getTokenFromStorageAsync(),
+      },
+      body: JSON.stringify({
+        name: libelle,
+        companyDescription: companyDescription,
+        offerDescription: offerDescription,
+        beginAt: beginAt,
+        contractType: contractType,
+        place: place
       })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-          navigation.navigate('ListAnnounce')
-        });
-
-
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      navigation.navigate('ListAnnounce')
+    }).catch((err) => {
+      alert(err);
+    });
   };
 
   return (

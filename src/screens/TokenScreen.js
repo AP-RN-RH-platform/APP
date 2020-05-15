@@ -5,6 +5,7 @@ import Logo from '../components/Logo';
 import Button from '../components/Button';
 import TextInput from '../components/TextInput';
 import { theme } from '../core/theme';
+import { API_URL } from 'react-native-dotenv';
 
 
 const LoginScreen = ({ navigation }) => {
@@ -12,23 +13,24 @@ const LoginScreen = ({ navigation }) => {
     const [token,setToken]= useState("");
 
     const offer = () => {
-        fetch('https://localhost:8443/send_invitation/'+ token, {
+        fetch(API_URL+'/send_invitation/'+ token, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
             }
         })
-            .then((response) => response.json())
-            .then((data) => {
-                if(data.detail){
-                    return alert(data.detail)
-                }
-                navigation.navigate('Offer',{
-                    data
-                  });
-
+        .then((response) => response.json())
+        .then((data) => {
+            if(data.detail){
+                return alert(data.detail)
+            }
+            navigation.navigate('Offer',{
+                data
             });
+        }).catch((err) => {
+            alert(err)
+        });
     };
 
     return (

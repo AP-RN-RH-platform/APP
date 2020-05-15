@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { Surface } from 'react-native-paper';
 import Background from '../components/Background';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import {API_URL} from 'react-native-dotenv';
 
 
 const ListAnnounce = ({ navigation }) => {
@@ -18,27 +19,27 @@ const ListAnnounce = ({ navigation }) => {
   //console.log(getTokenFromStorageAsync());
 
   const getOffersUser =  async() => {
-  fetch('https://localhost:8443/offers', {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + getTokenFromStorageAsync(),
-    },
-  }
-  ).then((response) => response.json())
-   .then((data) => {
-    console.log(data)
-    setOffers(data);
+    fetch(API_URL+'/offers', {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + getTokenFromStorageAsync(),
+        },
+      }
+    ).then((response) => response.json())
+      .then((data) => {
+        console.log(data)
+        setOffers(data);
 
-  });
-};
+      });
+  };
 
 
-    useEffect(() => {
-      // Met à jour le titre du document via l’API du navigateur
-      getOffersUser();
-    },[]);
+  useEffect(() => {
+    // Met à jour le titre du document via l’API du navigateur
+    getOffersUser();
+  },[]);
 
 
 
@@ -46,15 +47,15 @@ const ListAnnounce = ({ navigation }) => {
   return(
 
     <ScrollView>
-     { offers.map( (offer,i) =>
-     <TouchableOpacity onPress={() => navigation.navigate('OfferDetail',{
-      id: offer.id
-    })}>
-     <ListItem key={offer.id} children={{'title':offer.name, 'company':offer.companyDescription, 'offerdesc':offer.offerDescription, 'place':offer.place,"type":offer.type}}/>
-     </TouchableOpacity>
-    )}
+      { offers.map( (offer,i) =>
+        <TouchableOpacity onPress={() => navigation.navigate('OfferDetail',{
+          id: offer.id
+        })}>
+          <ListItem key={offer.id} children={{'title':offer.name, 'company':offer.companyDescription, 'offerdesc':offer.offerDescription, 'place':offer.place,"type":offer.type}}/>
+        </TouchableOpacity>
+      )}
     </ScrollView>
-    )
+  )
 
 
 
@@ -100,4 +101,3 @@ const styles = StyleSheet.create({
 });
 
 export default memo(ListAnnounce);
-

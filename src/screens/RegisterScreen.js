@@ -5,10 +5,13 @@ import Header from '../components/Header';
 import Button from '../components/Button';
 import TextInput from '../components/TextInput';
 import { theme } from '../core/theme';
+import AsyncStorage from "@react-native-community/async-storage";
+import RNFetchBlob from 'rn-fetch-blob';
 
 import ImagePicker from 'react-native-image-picker'
 
 import { RadioButton, List } from 'react-native-paper';
+import { API_URL } from 'react-native-dotenv';
 
 const RegisterScreen = ({ navigation }) => {
 
@@ -23,6 +26,10 @@ const RegisterScreen = ({ navigation }) => {
   const [address,setAddress]= useState("");
   const [city,setCity]= useState("");
 
+  const getTokenFromStorageAsync = async () => {
+      var value = await AsyncStorage.getItem('token')
+      return value
+  }
 
   const handleChoosePhoto = () => {
     const options = {
@@ -35,24 +42,6 @@ const RegisterScreen = ({ navigation }) => {
     })
   }
 
-  const createFormData = (photo, body) => {
-    const data = new FormData();
-  
-    data.append("photo", {
-      name: photo.fileName,
-      type: photo.type,
-      uri: photo.uri
-    });
-  
-    // Object.keys(body).forEach(key => {
-    //   data.append(key, body[key]);
-    // });
-  
-    return data;
-  };
-
-  
-
   const register = () => {
 
     if(password === "" || confirmPassword === "" || email === ""){
@@ -63,48 +52,75 @@ const RegisterScreen = ({ navigation }) => {
     }
 
     if(checked === "candidat"){
-
-      fetch('https://localhost:8443/media_objects', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: createFormData(picture)
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
+      if(picture !== null){
+        RNFetchBlob.fetch('POST', API_URL+'/media_objects', {
+              Authorization : 'Bearer ' + getTokenFromStorageAsync(),
+              'Content-Type' : 'multipart/form-data',
+        }, [{ name : 'file', filename : picture.fileName, type: picture.type, data:RNFetchBlob.wrap(picture.uri)},
+        ]).then((response) => {
+          const res = response.json();
+          const photo_iri = res.id ? "/media_objects/"+res.id : null;
+          fetch(API_URL+'/users', {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              email: email,
+              password: password,
+              firstname:firstname,
+              lastname:lastname,
+              genre:gender,
+              photo:photo_iri,
+              address:address,
+              city:city,
+              roles: [
+                "ROLE_APPLICANT"
+              ]
+            })
+          })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            navigation.navigate('Login')
+          }).catch((err) => {
+            alert(err.message)
+          });
+        }).catch((err) => {
+          alert(err.message)
         });
-
-
-      fetch('https://localhost:8443/users', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-          firstname:firstname,
-          lastname:lastname,
-          genre:gender,
-          photo:picture.uri,
-          address:address,
-          city:city,
-          role: [
-            "ROLE_APPLICANT"
-          ]
+      } else {
+        fetch(API_URL+'/users', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            email: email,
+            password: password,
+            firstname:firstname,
+            lastname:lastname,
+            genre:gender,
+            photo:"",
+            address:address,
+            city:city,
+            roles: [
+              "ROLE_APPLICANT"
+            ]
+          })
         })
-      })
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
           navigation.navigate('Login')
+        }).catch((err) => {
+          alert(err.message)
         });
+      }
     } else {
-      fetch('https://localhost:8443/users', {
+      fetch(API_URL+'/users', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
@@ -116,11 +132,14 @@ const RegisterScreen = ({ navigation }) => {
           roles:["ROLE_RECRUITER"]
         })
       })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-          navigation.navigate('Login')
-        });
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        navigation.navigate('Login')
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
     }
 
   };

@@ -4,6 +4,7 @@ import Background from '../components/Background';
 import Button from '../components/Button';
 import TextInput from "../components/TextInput";
 import AsyncStorage from '@react-native-community/async-storage';
+import { API_URL } from 'react-native-dotenv';
 
 import {List, Title} from 'react-native-paper';
 
@@ -20,20 +21,21 @@ const OfferDetailScreen = ({ route,navigation }) => {
     }
 
     useEffect(() => {
-        fetch('https://localhost:8443/current_user',
-            {
-            method: 'GET',
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + getTokenFromStorageAsync(),
-            }
-          })
-          .then((response) => response.json())
-          .then((data) => {
-
-            setRole(data.roles[0])
-          });
+        fetch(API_URL+'/current_user',
+          {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + getTokenFromStorageAsync(),
+          }
+        })
+        .then((response) => response.json())
+        .then((data) => {
+          setRole(data.roles[0])
+        }).catch((err) => {
+          alert(err)
+        });
       }, []);
 
     useEffect(() => {
@@ -56,7 +58,7 @@ const OfferDetailScreen = ({ route,navigation }) => {
 
 
   const sendInvitation = () => {
-    fetch('https://localhost:8443/invitations', {
+    fetch(API_URL+'/invitations', {
         method: 'POST',
         headers: {
             Accept: 'application/json',
@@ -68,11 +70,13 @@ const OfferDetailScreen = ({ route,navigation }) => {
           offer: "/offers/"+ offer.id
         })
     })
-        .then((response) => response.json())
-        .then((data) => {
-            console.log(data);
-            navigation.navigate('ListAnnounce');
-        });
+    .then((response) => response.json())
+    .then((data) => {
+        console.log(data);
+        navigation.navigate('ListAnnounce');
+    }).catch((err) => {
+      alert(err);
+    });
 
   };
 
