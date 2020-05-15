@@ -43,7 +43,7 @@ const [user,setUser]= useState({});
         })
         .then((response) => response.json())
         .then((data) => {
-            setRole(data.roles[0])
+            setRole(data.roles)
         }).catch((err) => {
             alert(err);
         });
@@ -57,7 +57,7 @@ if(getTokenFromStorageAsync() !== null){
         <Background>
             <Image source={require('../assets/person.png')} style={styles.image} />
             <Text>Bonjour, { user.email }</Text>
-            { role === 'ROLE_RECRUITER' &&
+            { role.includes("ROLE_RECRUITER") &&
             <Button mode="contained" onPress={() => navigation.navigate('CreateOffer')}>
                 Créer une offre
             </Button>
@@ -65,7 +65,7 @@ if(getTokenFromStorageAsync() !== null){
             <Button mode="contained" onPress={() => navigation.navigate('ListAnnounce')}>
                 Mes annonces
             </Button>
-            { role !== 'ROLE_RECRUITER' &&
+            { !role.includes("ROLE_RECRUITER") &&
             <Button mode="contained" onPress={() => navigation.navigate('Token')}>
                 Postuler a une offre
             </Button>}

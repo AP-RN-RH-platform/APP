@@ -26,11 +26,6 @@ const RegisterScreen = ({ navigation }) => {
   const [address,setAddress]= useState("");
   const [city,setCity]= useState("");
 
-  const getTokenFromStorageAsync = async () => {
-      var value = await AsyncStorage.getItem('token')
-      return value
-  }
-
   const handleChoosePhoto = () => {
     const options = {
       noData: true,
@@ -54,12 +49,13 @@ const RegisterScreen = ({ navigation }) => {
     if(checked === "candidat"){
       if(picture !== null){
         RNFetchBlob.fetch('POST', API_URL+'/media_objects', {
-              Authorization : 'Bearer ' + getTokenFromStorageAsync(),
               'Content-Type' : 'multipart/form-data',
         }, [{ name : 'file', filename : picture.fileName, type: picture.type, data:RNFetchBlob.wrap(picture.uri)},
         ]).then((response) => {
           const res = response.json();
           const photo_iri = res.id ? "/media_objects/"+res.id : null;
+          console.log("RES; ",res);
+          console.log("PICT; ",photo_iri);
           fetch(API_URL+'/users', {
             method: 'POST',
             headers: {
@@ -80,15 +76,23 @@ const RegisterScreen = ({ navigation }) => {
               ]
             })
           })
-          .then((response) => response.json())
+          .then((response) => {
+            const http_code = response.status;
+            if(http_code == 201){
+              navigation.navigate('Login')
+            } else {
+              response.json().then(function(data) {
+                console.log(data);
+                alert(data.title+", maybe the email address already exists !")
+              })
+            }
+          })
           .then((data) => {
-            console.log(data);
-            navigation.navigate('Login')
           }).catch((err) => {
-            alert(err.message)
+            alert(err)
           });
         }).catch((err) => {
-          alert(err.message)
+          alert(err)
         });
       } else {
         fetch(API_URL+'/users', {
