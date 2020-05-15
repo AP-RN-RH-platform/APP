@@ -12,10 +12,29 @@ const ApplicationShowScreen = ({route, navigation}) => {
   const applicationId = route.params.applicationId;
   const [application, setApplication] = useState({})
   const [checked, setChecked] = useState(null)
+  const [role,setRole]= useState("");
 
   const getTokenFromStorageAsync = async () => {
     return await AsyncStorage.getItem('token')
   }
+
+  useEffect(() => {
+      fetch(API_URL+'/current_user',
+          {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + getTokenFromStorageAsync(),
+          }
+      })
+      .then((response) => response.json())
+      .then((data) => {
+          setRole(data.roles)
+      }).catch((err) => {
+          alert(err);
+      });
+    }, []);
 
   const updateApplication = async () => {
     console.log("checked : ",checked);
@@ -85,27 +104,32 @@ const ApplicationShowScreen = ({route, navigation}) => {
           <List.Subheader>Motivations : {application.motives}</List.Subheader>
         </List.Section>
 
-        <Text>Mettre à jour l'état</Text>
-        <View>
-          <Text>RDV Fixé</Text>
-          <RadioButton
-            value="first"
-            status={checked === 'RDV fixé' ? 'checked' : 'unchecked'}
-            onPress={() => { setChecked('RDV fixé') }}
-          />
-          <Text>Accepté</Text>
-          <RadioButton
-            value="first"
-            status={checked === 'Accepté' ? 'checked' : 'unchecked'}
-            onPress={() => { setChecked('Accepté') }}
-          />
-          <Text>Refusé</Text>
-          <RadioButton
-            value="first"
-            status={checked === 'Refusé' ? 'checked' : 'unchecked'}
-            onPress={() => { setChecked('Refusé') }}
-          />
-        </View>
+
+        { role.includes("ROLE_RECRUITER") &&
+        <>
+          <Text>Mettre à jour l'état</Text>
+          <View>
+            <Text>RDV Fixé</Text>
+            <RadioButton
+              value="first"
+              status={checked === 'RDV fixé' ? 'checked' : 'unchecked'}
+              onPress={() => { setChecked('RDV fixé') }}
+            />
+            <Text>Accepté</Text>
+            <RadioButton
+              value="first"
+              status={checked === 'Accepté' ? 'checked' : 'unchecked'}
+              onPress={() => { setChecked('Accepté') }}
+            />
+            <Text>Refusé</Text>
+            <RadioButton
+              value="first"
+              status={checked === 'Refusé' ? 'checked' : 'unchecked'}
+              onPress={() => { setChecked('Refusé') }}
+            />
+          </View>
+        </>
+        }
         <Button mode="contained" onPress={updateApplication}>
           Mettre à jour le status
         </Button>
